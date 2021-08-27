@@ -27,11 +27,17 @@ update_function_layers(){
 	aws lambda update-function-configuration --function-name "${INPUT_LAMBDA_FUNCTION_NAME}" --layers "${INPUT_LAMBDA_LAYER_ARN}:${LAYER_VERSION}"
 }
 
+publish_version(){
+	echo "Publishing a new version..."
+	aws publish-version --function-name "${INPUT_LAMBDA_FUNCTION_NAME}"
+}
+
 deploy_lambda_function(){
 	install_zip_dependencies
 	publish_dependencies_as_layer
 	publish_function_code
 	update_function_layers
+	publish_version
 }
 
 deploy_lambda_function
