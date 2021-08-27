@@ -2,7 +2,7 @@
 
 [![GitHubActions](https://img.shields.io/badge/listed%20on-GitHubActions-blue.svg)](https://github-actions.netlify.com/py-lambda)
 
-A Github Action to deploy AWS Lambda functions written in Python with their dependencies in a separate layer. For now, only works with Python 3.6. PRs welcome.
+A Github Action to deploy AWS Lambda functions written in Python with their dependencies in a separate layer. For now, only works with Python 3.8. PRs welcome.
 
 ## Use
 Deploys everything in the repo as code to the Lambda function, and installs/zips/deploys the dependencies as a separate layer the function can then immediately use.
