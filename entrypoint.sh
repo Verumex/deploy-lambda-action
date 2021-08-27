@@ -9,8 +9,16 @@ install_zip_dependencies(){
 }
 
 publish_dependencies_as_layer(){
-	echo "Publishing dependencies as a layer..."
-	local result=$(aws lambda publish-layer-version --layer-name "${INPUT_LAMBDA_LAYER_ARN}" --zip-file fileb://dependencies.zip)
+	if [ $(wc -c <dependencies.zip) -gt 52428800 ] && [ -n "${INPUT_S3_BUCKET_NAME}" ]
+  then
+		echo "Uploading dependencies to S3..."
+		aws s3 cp dependencies.zip s3://"${INPUT_S3_BUCKET_NAME}"/"${INPUT_LAMBDA_LAYER_ARN}"_dependencies.zip
+		echo "Publishing dependencies from S3 as a layer..."
+		local result=$(aws lambda publish-layer-version --layer-name "${INPUT_LAMBDA_LAYER_ARN}" --content S3Bucket="${INPUT_S3_BUCKET_NAME}",S3Key="${INPUT_LAMBDA_LAYER_ARN}"_dependencies.zip)
+	else
+		echo "Publishing dependencies as a layer..."
+		local result=$(aws lambda publish-layer-version --layer-name "${INPUT_LAMBDA_LAYER_ARN}" --zip-file fileb://dependencies.zip)
+	fi
 	LAYER_VERSION=$(jq '.Version' <<< "$result")
 	rm -rf python
 	rm dependencies.zip
