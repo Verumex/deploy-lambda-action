@@ -2,7 +2,7 @@
 
 [![GitHubActions](https://img.shields.io/badge/listed%20on-GitHubActions-blue.svg)](https://github-actions.netlify.com/py-lambda)
 
-A Github Action to deploy AWS Lambda functions written in Python with their dependencies in a separate layer. For now, only works with Python 3.6. PRs welcome.
+A Github Action to deploy AWS Lambda functions written in Python with their dependencies in a separate layer. For now, only works with Python 3.8. PRs welcome.
 
 ## Use
 Deploys everything in the repo as code to the Lambda function, and installs/zips/deploys the dependencies as a separate layer the function can then immediately use.
@@ -29,6 +29,8 @@ Stored as secrets or env vars, doesn't matter. But also please don't put your AW
     - Partial ARN - `123456789012:function:my-function`
 - `requirements_txt`
     The name/path for the `requirements.txt` file. Defaults to `requirements.txt`.
+- `s3_bucket_name`
+    The S3 bucket name used for uploading the dependency layer to S3 when dependencies layer is larger than 50MB.
 
 
 ### Example workflow
@@ -41,11 +43,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@master
     - name: Deploy code to Lambda
-      uses: mariamrf/py-lambda-action@v1.0.0
+      uses: Verumex/deploy-lambda-action
       with:
         lambda_layer_arn: 'arn:aws:lambda:us-east-2:123456789012:layer:my-layer'
         lambda_function_name: 'my-function'
