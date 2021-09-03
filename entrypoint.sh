@@ -11,6 +11,7 @@ install_zip_dependencies(){
 publish_dependencies_as_layer(){
 	if [ -n "${INPUT_LAMBDA_LAYER_VERSION}" ]
 	then
+		echo "No layer version specified - attempting to upload/publish"
 		if [ $(wc -c <dependencies.zip) -gt 52428800 ] && [ -n "${INPUT_S3_BUCKET_NAME}" ]
 	  then
 			echo "Uploading dependencies to S3..."
@@ -23,6 +24,7 @@ publish_dependencies_as_layer(){
 		fi
 		LAYER_VERSION=$(jq '.Version' <<< "$result")
 	else
+		echo "Layer version specified - using ${INPUT_LAMBDA_LAYER_VERSION}"
 		LAYER_VERSION="${INPUT_LAMBDA_LAYER_VERSION}"
 	fi
 	rm -rf python
