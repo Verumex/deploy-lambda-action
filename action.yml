@@ -1,4 +1,4 @@
-name: Py Lambda Deploy
+name: Deploy Lambda Deploy
 author: Mariam Maarouf
 description: Deploy python code to AWS Lambda with dependencies in a separate layer.
 inputs:
@@ -6,12 +6,15 @@ inputs:
     description: The name/path to the requirements.txt file
     required: true
     default: 'requirements.txt'
-  lambda_layer_arn:
-    description: The ARN for the Lambda layer the dependencies should be pushed to without the version (every push is a new version).
-    required: true
   lambda_function_name:
     description: The Lambda function name. Check the AWS docs/readme for examples.
     required: true
+  lambda_layer_arn:
+    description: The ARN for the Lambda layer the dependencies should be pushed to without the version (every push is a new version).
+    required: true
+  lambda_layer_version:
+    description: The version of the Lambda layer that should be used. If this is set, no layer update will occur.
+    required: false
   s3_bucket_name:
     description: The S3 bucket name for the dependencies layer upload.
     required: false
@@ -21,8 +24,9 @@ runs:
   image: 'Dockerfile'
   args:
     - ${{ inputs.requirements_txt }}
-    - ${{ inputs.lambda_layer_arn }}
     - ${{ inputs.lambda_function_name }}
+    - ${{ inputs.lambda_layer_arn }}
+    - ${{ inputs.lambda_layer_version }}
     - ${{ inputs.s3_bucket_name }}
 branding:
   icon: 'layers'
