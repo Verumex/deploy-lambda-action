@@ -9,7 +9,7 @@ install_zip_dependencies(){
 }
 
 publish_dependencies_as_layer(){
-	if [ -n "${INPUT_LAMBDA_LAYER_VERSION}" ]
+	if [ -z "${INPUT_LAMBDA_LAYER_VERSION}" ]
 	then
 		echo "No layer version specified - attempting to upload/publish"
 		if [ $(wc -c <dependencies.zip) -gt 52428800 ] && [ -n "${INPUT_S3_BUCKET_NAME}" ]
