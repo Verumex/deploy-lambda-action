@@ -44,7 +44,7 @@ update_function_layers(){
 
 publish_version(){
 	echo "Publishing a new version..."
-	aws publish-version --function-name "${INPUT_LAMBDA_FUNCTION_NAME}"
+	aws lambda publish-version --function-name "${INPUT_LAMBDA_FUNCTION_NAME}"
 }
 
 deploy_lambda_function(){
