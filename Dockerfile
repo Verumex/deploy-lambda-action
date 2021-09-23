@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM public.ecr.aws/lambda/python:3.8
 
 RUN apt-get update
 RUN apt-get install -y jq zip
